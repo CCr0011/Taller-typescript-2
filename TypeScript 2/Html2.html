@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Series de Televisión</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h1 class="mb-4">TV Series</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Channel</th>
+                            <th scope="col">Seasons</th>
+                        </tr>
+                    </thead>
+                    <tbody id="seriesTableBody">
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3"></td>
+                            <td id="averageCell">Seasons average: </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <div id="serieDetailCard" class="card" style="display: none;">
+                    <img id="serieImage" src="" class="card-img-top" alt="Serie Image">
+                    <div class="card-body">
+                        <h5 id="serieName" class="card-title"></h5>
+                        <p id="serieDescription" class="card-text"></p>
+                        <a href="#" id="serieLink" target="_blank" class="btn btn-primary">More Info</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./Serie.js"></script>
+    <script src="./Data.js"></script>
+
+    <script>
+        window.onload = function () {
+            let tableBody = document.getElementById('seriesTableBody');
+
+            for (let serie of series) {
+                let row = tableBody.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                let cell3 = row.insertCell(2);
+                let cell4 = row.insertCell(3);
+                cell1.innerHTML = serie.id.toString();
+                cell2.innerHTML = `<a href="#" onclick="displaySerieDetail(series[${serie.id - 1}])">${serie.name}</a>`;
+                cell3.innerHTML = serie.channel;
+                cell4.innerHTML = serie.seasons.toString();
+            }
+
+            let totalSeasons = 0;
+            for (let serie of series) {
+                totalSeasons += serie.seasons;
+            }
+            let averageSeasons = totalSeasons / series.length;
+            document.getElementById('averageCell').textContent = `Seasons average: ${averageSeasons.toFixed(2)}`;
+        }
+
+        function displaySerieDetail(serie) {
+            document.getElementById('serieDetailCard').style.display = 'block';
+            document.getElementById('serieImage').src = serie.img;
+            document.getElementById('serieName').innerText = serie.name;
+            document.getElementById('serieDescription').innerText = serie.description;
+            document.getElementById('serieLink').href = serie.link;
+        }
+    </script>
+</body>
+
+</html>
+
